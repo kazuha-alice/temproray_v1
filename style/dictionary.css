@@ -1,0 +1,76 @@
+/* style/dictionary.css */
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1em;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode .input-group input {
+  background: #555;
+  color: #f0f0f0;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.button-group button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 3px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button-group button:hover {
+  background: #0056b3;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode select {
+  background: #555;
+  color: #f0f0f0;
+}
+
+/* Temporary preview panel */
+.output {
+  margin-top: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 3px;
+  min-height: 50px;
+  font-size: 0.9em;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode .output {
+  background: #444;
+  color: #f0f0f0;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modern Task Dashboard</title>
+  
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <!-- Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="style/app.css" />
+  <link rel="stylesheet" href="style/dictionary.css" />
+  <link rel="stylesheet" href="style/command.css" />
+
+  <!-- Chart.js for network latency graph -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container" id="dashboard">
+    <header class="header">
+      <h1>
+        <i class="material-icons">dashboard</i> Task Dashboard
+      </h1>
+      <div class="header-right">
+        <!-- Dark mode toggle -->
+        <label class="switch">
+          <input type="checkbox" id="modeToggle" />
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Task Manager Panel -->
+      <div class="panel dictionary-panel">
+        <h2><i class="material-icons">storage</i> Task Manager</h2>
+        <div class="input-group">
+          <input type="text" id="keyInput" placeholder="Enter Task Key" />
+          <input type="text" id="valueInput" placeholder="Values (comma separated)" />
+        </div>
+        <div class="button-group">
+          <button id="pushButton"><i class="material-icons">add</i> Push</button>
+          <button id="deleteButton"><i class="material-icons">delete</i> Delete</button>
+          <button id="searchButton"><i class="material-icons">search</i> Search</button>
+          <button id="refreshButton"><i class="material-icons">refresh</i> Refresh Tasks</button>
+        </div>
+        <select id="taskDropdown">
+          <option value="">Select Task</option>
+        </select>
+        <div id="dictionaryOutput" class="output"></div>
+      </div>
+
+      <!-- Command Center Panel -->
+      <div class="panel command-panel">
+        <h2><i class="material-icons">send</i> Command Center</h2>
+        <div class="input-group">
+          <select id="commandDropdown">
+            <option value="">Select Task</option>
+          </select>
+          <button id="runButton"><i class="material-icons">play_arrow</i> Run</button>
+        </div>
+        <div class="output" id="statusDisplay"></div>
+        <div class="button-group">
+          <button id="togglePollingButton"><i class="material-icons">pause</i> Stop Polling</button>
+          <button id="clearLogsButton"><i class="material-icons">delete_sweep</i> Clear Logs</button>
+        </div>
+        <!-- Polling Frequency Selector -->
+        <div class="polling-control">
+          <label for="pollingSelect">Polling Interval:</label>
+          <select id="pollingSelect">
+            <option value="150">150 ms</option>
+            <option value="1000">1 s</option>
+            <option value="5000">5 s</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Network Latency Graph Panel -->
+      <div class="panel graph-panel">
+        <h2><i class="material-icons">timeline</i> Network Latency Graph</h2>
+        <canvas id="latencyChart"></canvas>
+        <div class="graph-toolbar">
+          <button id="pauseGraphButton"><i class="material-icons">pause</i> Pause Graph</button>
+          <button id="exportGraphButton"><i class="material-icons">file_download</i> Export Graph</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="layout/dictionary.js"></script>
+  <script src="layout/command.js"></script>
+  <script src="script/app.js"></script>
+</body>
+</html>

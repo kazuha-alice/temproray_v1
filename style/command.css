@@ -1,0 +1,106 @@
+/* style/command.css */
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.input-group select {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1em;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode .input-group select {
+  background: #555;
+  color: #f0f0f0;
+}
+
+.input-group button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 3px;
+  background: #28a745;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.input-group button:hover {
+  background: #1e7e34;
+}
+
+.button-group {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.button-group button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 3px;
+  background: #6c757d;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button-group button:hover {
+  background: #5a6268;
+}
+
+/* Status badges for system messages */
+.status-badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+.status-free {
+  background-color: #28a745;
+  color: #fff;
+}
+.status-busy {
+  background-color: #ffc107;
+  color: #333;
+}
+.status-emergency {
+  background-color: #dc3545;
+  color: #fff;
+}
+.status-error,
+.status-offline {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Graph panel style */
+.graph-panel {
+  text-align: center;
+}
+
+/* Graph toolbar buttons */
+.graph-toolbar button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 3px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.graph-toolbar button:hover {
+  background: #0056b3;
+}
+
+/* Polling control label */
+.polling-control label {
+  font-size: 0.9em;
+}
