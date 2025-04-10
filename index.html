@@ -19,6 +19,14 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <!-- Floating Shapes for a vibrant background -->
+  <div class="floating-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+    <div class="shape shape4"></div>
+  </div>
+
   <div class="container" id="dashboard">
     <header class="header">
       <h1>
@@ -42,10 +50,13 @@
           <input type="text" id="valueInput" placeholder="Values (comma separated)" />
         </div>
         <div class="button-group">
-          <button id="pushButton"><i class="material-icons">add</i> Push</button>
-          <button id="deleteButton"><i class="material-icons">delete</i> Delete</button>
-          <button id="searchButton"><i class="material-icons">search</i> Search</button>
-          <button id="refreshButton"><i class="material-icons">refresh</i> Refresh Tasks</button>
+          <button id="pushButton" class="round-button"><i class="material-icons">add</i> Push</button>
+          <button id="deleteButton" class="round-button"><i class="material-icons">delete</i> Delete</button>
+          <button id="searchButton" class="round-button"><i class="material-icons">search</i> Search</button>
+          <button type="button" id="refreshButton" class="round-button">
+            <i class="material-icons">refresh</i> Refresh Tasks
+          </button>
+          
         </div>
         <select id="taskDropdown">
           <option value="">Select Task</option>
@@ -60,12 +71,12 @@
           <select id="commandDropdown">
             <option value="">Select Task</option>
           </select>
-          <button id="runButton"><i class="material-icons">play_arrow</i> Run</button>
+          <button id="runButton" class="round-button"><i class="material-icons">play_arrow</i> Run</button>
         </div>
         <div class="output" id="statusDisplay"></div>
         <div class="button-group">
-          <button id="togglePollingButton"><i class="material-icons">pause</i> Stop Polling</button>
-          <button id="clearLogsButton"><i class="material-icons">delete_sweep</i> Clear Logs</button>
+          <button id="togglePollingButton" class="round-button"><i class="material-icons">pause</i> Stop Polling</button>
+          <button id="clearLogsButton" class="round-button"><i class="material-icons">delete_sweep</i> Clear Logs</button>
         </div>
         <!-- Polling Frequency Selector -->
         <div class="polling-control">
@@ -83,8 +94,8 @@
         <h2><i class="material-icons">timeline</i> Network Latency Graph</h2>
         <canvas id="latencyChart"></canvas>
         <div class="graph-toolbar">
-          <button id="pauseGraphButton"><i class="material-icons">pause</i> Pause Graph</button>
-          <button id="exportGraphButton"><i class="material-icons">file_download</i> Export Graph</button>
+          <button id="pauseGraphButton" class="round-button"><i class="material-icons">pause</i> Pause Graph</button>
+          <button id="exportGraphButton" class="round-button"><i class="material-icons">file_download</i> Export Graph</button>
         </div>
       </div>
     </div>

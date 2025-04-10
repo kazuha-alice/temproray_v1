@@ -6,6 +6,7 @@ var CommandCenter = (function () {
   var latencyData = [];
   var pollingActive = true;
   var isSending = false;
+  var isPollingRunning = false;  // Flag to prevent overlapping polling calls
   var statusDisplay = document.getElementById("statusDisplay");
 
   function sendTask(taskKey, values) {
@@ -26,7 +27,7 @@ var CommandCenter = (function () {
     const jsonData = JSON.stringify(payload);
     console.log("sendTask JSON payload:", jsonData);
 
-    // Critical fix: set startTime before fetch
+    // Set startTime before fetch
     var startTime = performance.now();
 
     var postUrl = "https://vb75uok5bkd7glvhy2fam4p7gy0bxone.lambda-url.ap-south-1.on.aws/?action=post";
@@ -41,19 +42,19 @@ var CommandCenter = (function () {
         updateLatency(latency);
         console.log("Lambda Response:", text);
 
-        // Check for success in response text
-        const status = text.toLowerCase().includes("success") || text.toLowerCase().includes("assigned") 
-                       ? "success" 
-                       : "error";
+        // Determine status
+        const status = text.toLowerCase().includes("success") || text.toLowerCase().includes("assigned")
+          ? "success"
+          : "error";
         if (status === "success") {
           updateStatusDisplay("Task Assigned successfully");
         } else {
           updateStatusDisplay("Lambda responded: " + text);
         }
 
-        // New log entry format with units
+        // Log data only on task run (no auto-download during polling)
         logData({
-          timestamp: new Date().toISOString(),
+          timestamp: Date.now(),
           taskName: taskKey,
           commands: values,
           latencyMs: latency,
@@ -74,7 +75,9 @@ var CommandCenter = (function () {
 
   function checkSystemStatuses() {
     if (!pollingActive) return;
-
+    if (isPollingRunning) return;
+    isPollingRunning = true;
+    
     var systems = {
       R1: "https://3zn2ik4ebtpunfecfbzvydqeee0uyhhw.lambda-url.ap-south-1.on.aws/",
       R2: "https://onbasxb5gbqdjyow3smf3wuabi0bykpe.lambda-url.ap-south-1.on.aws/",
@@ -83,6 +86,7 @@ var CommandCenter = (function () {
     };
     var systemStatuses = {};
 
+    // Use Promise.allSettled to catch all errors without rejecting the promise
     var promises = Object.keys(systems).map(sysKey => {
       var startTime = performance.now();
       return fetch(systems[sysKey])
@@ -90,7 +94,6 @@ var CommandCenter = (function () {
         .then(text => {
           var lat = performance.now() - startTime;
           updateLatency(lat);
-          // Capture digits from the beginning of the "message"
           var match = text.match(/"message"\s*:\s*"(\d+)/);
           var code = match ? match[1] : "";
           if (code === "1") systemStatuses[sysKey] = "free";
@@ -118,7 +121,7 @@ var CommandCenter = (function () {
         .catch(() => {});
     });
 
-    Promise.all(promises).then(() => {
+    Promise.allSettled(promises).then(() => {
       var out = "";
       Object.keys(systemStatuses).forEach(k => {
         var badgeClass = "status-badge ";
@@ -143,6 +146,9 @@ var CommandCenter = (function () {
       out += "+-----------------+<br>";
       out += "Latency: " + (latencyCount > 0 ? (totalLatency / latencyCount).toFixed(1) + " ms" : "N/A");
       updateStatusDisplay(out);
+      isPollingRunning = false;  // Reset flag when done
+    }).catch(() => {
+      isPollingRunning = false;
     });
   }
 
@@ -159,27 +165,18 @@ var CommandCenter = (function () {
     statusDisplay.innerHTML = msg;
   }
 
-  // UPDATED: logData now auto-downloads the log file (does not stack) per task run
+  // logData() is used only in sendTask() – no polling download
   function logData(entry) {
-    const now = new Date();
-    const filename =
-      ("0" + now.getDate()).slice(-2) +
-      ("0" + (now.getMonth() + 1)).slice(-2) +
-      now.getFullYear() +
-      ("0" + now.getHours()).slice(-2) +
-      ("0" + now.getMinutes()).slice(-2) +
-      ("0" + now.getSeconds()).slice(-2) +
-      ".json";
-
-    const blob = new Blob([JSON.stringify(entry, null, 2)], {
-      type: "application/json"
-    });
+    const filename = Date.now() + ".json";
+    const blob = new Blob([JSON.stringify(entry, null, 2)], { type: "application/json" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = filename;
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   }
-
+  
   function togglePolling() {
     pollingActive = !pollingActive;
     var btn = document.getElementById("togglePollingButton");

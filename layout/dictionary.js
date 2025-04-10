@@ -32,7 +32,7 @@ var DictionaryManager = (function () {
   }
 
   function saveToCloud() {
-    // We send the dictionary in the same raw format as Unity
+    // Convert dictionary to JSON
     var jsonData = JSON.stringify(dataDictionary);
     fetch(lambdaEndpoint + "?action=post", {
       method: "POST",

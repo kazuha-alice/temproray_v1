@@ -1,6 +1,9 @@
 // script/app.js
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Global variable for export guard
+  let isExporting = false;
+
   // 1) Load tasks from S3
   DictionaryManager.loadFromCloud();
 
@@ -96,18 +99,15 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     updateGraph: function (latencyData) {
       if (!this.chart || this.graphPaused) return;
-
-      // Limit the graph to the last 30 data points
       const MAX_POINTS = 30;
       if (latencyData.length > MAX_POINTS) {
         latencyData.splice(0, latencyData.length - MAX_POINTS);
       }
-
       this.chart.data.labels = latencyData.map(e => e.time);
       this.chart.data.datasets[0].data = latencyData.map(e => e.latency);
       this.chart.update();
     },
-    // Save log entries and trigger a download of a JSON file (this is now called per task run)
+    // Save log entries and trigger a download of a JSON file (only called per task run)
     saveLog: function (logEntry) {
       this.logEntries.push(logEntry);
       var now = new Date();
@@ -123,7 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
       var link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = filename;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     },
     pauseGraph: function () {
       this.graphPaused = true;
@@ -151,13 +153,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.getElementById("exportGraphButton").addEventListener("click", function () {
-    if (!App.chart) return;
-    var link = document.createElement('a');
-    link.href = App.chart.toBase64Image();
-    link.download = 'latency-graph.png';
-    link.click();
+    if (!App.chart || isExporting) return;
+    isExporting = true;
+    try {
+      var link = document.createElement('a');
+      link.href = App.chart.toBase64Image();
+      link.download = 'latency-graph.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      console.error("Export failed", e);
+    }
+    setTimeout(() => { isExporting = false; }, 500);
   });
-
+  
   // 8) Additional UI events for polling and logs
   document.getElementById("togglePollingButton").addEventListener("click", function () {
     CommandCenter.togglePolling();
@@ -167,4 +177,5 @@ document.addEventListener("DOMContentLoaded", function () {
     App.logEntries = [];
     CommandCenter.clearLatencyStats();
   });
+  
 });

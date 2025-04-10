@@ -25,15 +25,15 @@ body.dark-mode .input-group select {
   gap: 5px;
   padding: 8px 12px;
   border: none;
-  border-radius: 3px;
-  background: #28a745;
+  border-radius: 50px; /* round button */
+  background: linear-gradient(135deg, #ff5722, #ff9800);
   color: #fff;
   cursor: pointer;
   transition: background 0.3s;
 }
 
 .input-group button:hover {
-  background: #1e7e34;
+  background: linear-gradient(135deg, #ff3d00, #ff9100);
 }
 
 .button-group {
@@ -46,15 +46,19 @@ body.dark-mode .input-group select {
 .button-group button {
   padding: 8px 12px;
   border: none;
-  border-radius: 3px;
-  background: #6c757d;
+  border-radius: 50px; /* round button */
+  background: linear-gradient(135deg, #3f51b5, #2196f3);
   color: #fff;
   cursor: pointer;
   transition: background 0.3s;
 }
 
 .button-group button:hover {
-  background: #5a6268;
+  background: linear-gradient(135deg, #283593, #1976d2);
+}
+
+.round-button {
+  border-radius: 50px !important;
 }
 
 /* Status badges for system messages */
@@ -90,14 +94,14 @@ body.dark-mode .input-group select {
 .graph-toolbar button {
   padding: 6px 10px;
   border: none;
-  border-radius: 3px;
-  background: #007bff;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #9c27b0, #e91e63);
   color: #fff;
   cursor: pointer;
   transition: background 0.3s;
 }
 .graph-toolbar button:hover {
-  background: #0056b3;
+  background: linear-gradient(135deg, #7b1fa2, #c2185b);
 }
 
 /* Polling control label */
